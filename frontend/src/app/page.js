@@ -53,7 +53,7 @@ export default function Login() {
             </button>
           </form>
           {error && <div className={styles.errorMsg}>{error}</div>}
-          <a href="#" className={styles.forgot}>Esqueci minha senha</a>
+          <a href="/recuperar-senha" className={styles.forgot}>Esqueci minha senha</a>
         </div>
       </div>
     </>

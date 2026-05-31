@@ -64,21 +64,22 @@ export const mapUserFromBackend = (backendUser) => {
 
 // Mapeador para Beneficiários (quando o controller for criado)
 export const mapBeneficiaryToBackend = (frontendBeneficiary) => {
-  // CPF pode ser vazio se NIF foi preenchido, mas não pode ser ambos vazios (validação já feita no frontend)
-  const cpfValue = frontendBeneficiary.cpfCrnm || (frontendBeneficiary.nif ? "" : null);
+  const cpfValue = frontendBeneficiary.cpfCrnm || "";
 
   return {
     fullName: frontendBeneficiary.nomeCompleto,
-    cpf: cpfValue || "", // Se não tem CPF mas tem NIF, envia string vazia
-    phone: frontendBeneficiary.telefoneCelular, // Já vem limpo (apenas números) do frontend
-    socioeconomicData: JSON.stringify({
+    cpf: cpfValue,
+    phone: frontendBeneficiary.telefoneCelular,
+    email: frontendBeneficiary.email || null,
+    nif: frontendBeneficiary.nif || null,
+    address: JSON.stringify({
       endereco: frontendBeneficiary.endereco,
       bairro: frontendBeneficiary.bairro,
       numero: frontendBeneficiary.numero,
       complemento: frontendBeneficiary.complemento,
       pontoReferencia: frontendBeneficiary.pontoReferencia,
     }),
-    beneficiaryStatus: 'PENDING', // Status padrão
+    beneficiaryStatus: 'PENDING',
     withdrawalLimit: frontendBeneficiary.withdrawalLimit ? parseInt(frontendBeneficiary.withdrawalLimit) : null,
   };
 };
@@ -86,18 +87,18 @@ export const mapBeneficiaryToBackend = (frontendBeneficiary) => {
 export const mapBeneficiaryFromBackend = (backendBeneficiary) => {
   let socioeconomicData = {};
   try {
-    socioeconomicData = JSON.parse(backendBeneficiary.socioeconomicData || '{}');
+    socioeconomicData = JSON.parse(backendBeneficiary.address || '{}');
   } catch (e) {
-    console.warn('Erro ao parsear socioeconomicData:', e);
+    console.warn('Erro ao parsear address:', e);
   }
 
   return {
     id: backendBeneficiary.beneficiaryId,
     nomeCompleto: backendBeneficiary.fullName,
-    cpfCrnm: backendBeneficiary.cpf,
-    nif: '', // Campo não disponível no backend atual
-    telefoneCelular: backendBeneficiary.phone,
-    email: '', // Campo não disponível no backend atual
+    cpfCrnm: backendBeneficiary.cpf || '',
+    nif: backendBeneficiary.nif || '',
+    telefoneCelular: backendBeneficiary.phone || '',
+    email: backendBeneficiary.email || '',
     withdrawalLimit: backendBeneficiary.withdrawalLimit || '',
     currentWithdrawalsThisMonth: backendBeneficiary.currentWithdrawalsThisMonth || 0,
     endereco: socioeconomicData.endereco || '',

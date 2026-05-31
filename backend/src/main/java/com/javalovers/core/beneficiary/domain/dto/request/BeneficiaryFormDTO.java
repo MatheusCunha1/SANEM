@@ -9,17 +9,21 @@ public record BeneficiaryFormDTO(
         @NotBlank(message = "Nome completo é obrigatório")
         @Size(min = 3, max = 255, message = "Nome completo deve ter entre 3 e 255 caracteres")
         String fullName,
-        
+
         @Pattern(regexp = "^$|^[0-9]{11}$", message = "CPF deve conter exatamente 11 dígitos numéricos quando preenchido")
         String cpf,
-        
+
         @NotBlank(message = "Telefone é obrigatório")
         @Pattern(regexp = "^[0-9]{10,11}$", message = "Telefone deve conter 10 ou 11 dígitos numéricos")
         String phone,
-        
-        String socioeconomicData,
+
+        String email,
+
+        String nif,
+
+        String address,
         BeneficiaryStatus beneficiaryStatus,
-        
+
         Integer withdrawalLimit
 ) {
 }

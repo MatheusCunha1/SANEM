@@ -15,7 +15,8 @@ public class AppUserCreateMapper {
     public AppUser convert(AppUserFormDTO appUserFormDTO) {
         AppUser user = new AppUser();
         user.setName(appUserFormDTO.name());
-        user.setEmail(appUserFormDTO.email()); ;
+        user.setLogin(appUserFormDTO.login());
+        user.setEmail(appUserFormDTO.email());
         user.setPasswordHash(passwordEncoder.encode(appUserFormDTO.password()));
         user.setStatus(appUserFormDTO.status());
         user.setProfile(appUserFormDTO.profile());

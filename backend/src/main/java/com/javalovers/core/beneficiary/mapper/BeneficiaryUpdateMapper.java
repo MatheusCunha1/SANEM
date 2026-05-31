@@ -12,7 +12,9 @@ public class BeneficiaryUpdateMapper {
         beneficiary.setFullName(beneficiaryFormDTO.fullName());
         beneficiary.setCpf(beneficiaryFormDTO.cpf());
         beneficiary.setPhone(beneficiaryFormDTO.phone());
-        beneficiary.setSocioeconomicData(beneficiaryFormDTO.socioeconomicData());
+        beneficiary.setEmail(beneficiaryFormDTO.email());
+        beneficiary.setNif(beneficiaryFormDTO.nif());
+        beneficiary.setAddress(beneficiaryFormDTO.address());
         beneficiary.setBeneficiaryStatus(beneficiaryFormDTO.beneficiaryStatus());
         beneficiary.setWithdrawalLimit(beneficiaryFormDTO.withdrawalLimit());
     }

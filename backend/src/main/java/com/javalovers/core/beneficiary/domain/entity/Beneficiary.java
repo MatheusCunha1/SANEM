@@ -33,14 +33,17 @@ public class Beneficiary implements SoftDeletable {
     @Column(name = "cpf", unique = true)
     private String cpf;
 
-    @Column(name = "address")
-    private String address;
+    @Column(name = "email")
+    private String email;
+
+    @Column(name = "nif")
+    private String nif;
 
     @Column(name = "phone")
     private String phone;
 
-    @Column(name = "socioeconomic_data")
-    private String socioeconomicData;
+    @Column(name = "address")
+    private String address;
 
     @Convert(converter = BeneficiaryStatus.BeneficiaryStatusConverter.class)
     @Column(name = "beneficiary_status")

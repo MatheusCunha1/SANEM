@@ -38,6 +38,15 @@ public class DatabaseInitializer implements CommandLineRunner {
 
     // Verificar e remover coluna category_id da tabela item se existir
     checkAndRemoveCategoryIdColumn();
+
+    // Verificar e adicionar coluna deleted_at na tabela app_user se não existir
+    checkAndAddDeletedAtColumn();
+
+    // Verificar e adicionar colunas email e nif na tabela beneficiary
+    checkAndAddBeneficiaryColumns();
+
+    // Verificar e adicionar colunas de reset de senha na tabela app_user
+    checkAndAddPasswordResetColumns();
   }
 
   private void checkAndAddIssueDateColumn() {
@@ -105,6 +114,80 @@ public class DatabaseInitializer implements CommandLineRunner {
     } catch (Exception e) {
       log.warn("Erro ao verificar/remover coluna category_id: {}", e.getMessage());
       // Não lançar exceção para não impedir a inicialização da aplicação
+    }
+  }
+
+  private void checkAndAddDeletedAtColumn() {
+    String[] tables = {"app_user", "profile", "beneficiary", "card", "category", "item",
+        "donor", "donation", "withdrawal", "item_donated", "item_withdrawn", "withdrawal_limit_config"};
+
+    for (String table : tables) {
+      try {
+        String checkSql = "SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS " +
+            "WHERE TABLE_SCHEMA = DATABASE() " +
+            "AND TABLE_NAME = '" + table + "' " +
+            "AND COLUMN_NAME = 'deleted_at'";
+
+        Integer exists = jdbcTemplate.queryForObject(checkSql, Integer.class);
+        if (exists == null || exists == 0) {
+          jdbcTemplate.execute("ALTER TABLE " + table + " ADD COLUMN deleted_at DATETIME NULL");
+          log.info("Coluna deleted_at adicionada na tabela {}.", table);
+        }
+      } catch (Exception e) {
+        log.warn("Erro ao verificar/adicionar deleted_at na tabela {}: {}", table, e.getMessage());
+      }
+    }
+  }
+
+  private void checkAndAddBeneficiaryColumns() {
+    String[][] columns = {
+        {"beneficiary", "email", "VARCHAR(160) NULL"},
+        {"beneficiary", "nif", "VARCHAR(30) NULL"}
+    };
+
+    for (String[] col : columns) {
+      try {
+        String checkSql = "SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS " +
+            "WHERE TABLE_SCHEMA = DATABASE() " +
+            "AND TABLE_NAME = '" + col[0] + "' " +
+            "AND COLUMN_NAME = '" + col[1] + "'";
+
+        Integer exists = jdbcTemplate.queryForObject(checkSql, Integer.class);
+        if (exists == null || exists == 0) {
+          jdbcTemplate.execute("ALTER TABLE " + col[0] + " ADD COLUMN " + col[1] + " " + col[2]);
+          log.info("Coluna {} adicionada na tabela {}.", col[1], col[0]);
+        }
+      } catch (Exception e) {
+        log.warn("Erro ao adicionar coluna {} em {}: {}", col[1], col[0], e.getMessage());
+      }
+    }
+  }
+
+  private void checkAndAddPasswordResetColumns() {
+    try {
+      String checkResetToken = "SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS " +
+          "WHERE TABLE_SCHEMA = DATABASE() " +
+          "AND TABLE_NAME = 'app_user' " +
+          "AND COLUMN_NAME = 'reset_token'";
+
+      Integer resetTokenExists = jdbcTemplate.queryForObject(checkResetToken, Integer.class);
+      if (resetTokenExists == null || resetTokenExists == 0) {
+        jdbcTemplate.execute("ALTER TABLE app_user ADD COLUMN reset_token VARCHAR(100) NULL");
+        log.info("Coluna reset_token adicionada na tabela app_user.");
+      }
+
+      String checkResetExpiry = "SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS " +
+          "WHERE TABLE_SCHEMA = DATABASE() " +
+          "AND TABLE_NAME = 'app_user' " +
+          "AND COLUMN_NAME = 'reset_token_expiry'";
+
+      Integer resetExpiryExists = jdbcTemplate.queryForObject(checkResetExpiry, Integer.class);
+      if (resetExpiryExists == null || resetExpiryExists == 0) {
+        jdbcTemplate.execute("ALTER TABLE app_user ADD COLUMN reset_token_expiry DATETIME NULL");
+        log.info("Coluna reset_token_expiry adicionada na tabela app_user.");
+      }
+    } catch (Exception e) {
+      log.warn("Erro ao verificar/adicionar colunas de reset de senha: {}", e.getMessage());
     }
   }
 

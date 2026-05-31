@@ -5,11 +5,14 @@ import com.javalovers.core.appuser.domain.dto.response.LoginResponseDTO;
 import com.javalovers.core.appuser.domain.entity.AppUser;
 import com.javalovers.core.appuser.repository.AppUserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AuthService {
@@ -60,6 +63,35 @@ public class AuthService {
     // Implementação simples de validação de token
     // Em produção, usar JWT ou similar
     return token != null && token.startsWith("Bearer ");
+  }
+
+  public String generatePasswordResetToken(String email) {
+    AppUser user = appUserRepository.findByEmail(email)
+        .orElseThrow(() -> new RuntimeException("Usuário não encontrado com este email"));
+
+    String token = UUID.randomUUID().toString();
+    user.setResetToken(token);
+    user.setResetTokenExpiry(LocalDateTime.now().plusHours(1));
+    appUserRepository.save(user);
+
+    log.info("Token de recuperação de senha gerado para: {}", email);
+    return token;
+  }
+
+  public void resetPassword(String token, String newPassword) {
+    AppUser user = appUserRepository.findByResetToken(token)
+        .orElseThrow(() -> new RuntimeException("Token inválido ou expirado"));
+
+    if (user.getResetTokenExpiry() == null || LocalDateTime.now().isAfter(user.getResetTokenExpiry())) {
+      throw new RuntimeException("Token expirado. Solicite uma nova recuperação de senha.");
+    }
+
+    user.setPasswordHash(passwordEncoder.encode(newPassword));
+    user.setResetToken(null);
+    user.setResetTokenExpiry(null);
+    appUserRepository.save(user);
+
+    log.info("Senha redefinida com sucesso para o usuário: {}", user.getLogin());
   }
 
   private String generateToken() {

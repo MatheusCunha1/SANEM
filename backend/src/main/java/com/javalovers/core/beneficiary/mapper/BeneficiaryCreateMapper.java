@@ -12,10 +12,12 @@ public class BeneficiaryCreateMapper {
         beneficiary.setFullName(beneficiaryFormDTO.fullName());
         beneficiary.setCpf(beneficiaryFormDTO.cpf());
         beneficiary.setPhone(beneficiaryFormDTO.phone());
-        beneficiary.setSocioeconomicData(beneficiaryFormDTO.socioeconomicData());
+        beneficiary.setEmail(beneficiaryFormDTO.email());
+        beneficiary.setNif(beneficiaryFormDTO.nif());
+        beneficiary.setAddress(beneficiaryFormDTO.address());
         beneficiary.setBeneficiaryStatus(beneficiaryFormDTO.beneficiaryStatus());
         beneficiary.setWithdrawalLimit(beneficiaryFormDTO.withdrawalLimit());
-        beneficiary.setCurrentWithdrawalsThisMonth(0); // Inicializar com 0
+        beneficiary.setCurrentWithdrawalsThisMonth(0);
 
         return beneficiary;
     }
