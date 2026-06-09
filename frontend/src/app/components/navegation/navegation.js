@@ -3,7 +3,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import styles from './navegation.module.css';
-import { FaHome, FaUserPlus, FaBoxes, FaHandHoldingHeart, FaUsers, FaChartBar, FaCog, FaUser, FaQuestionCircle, FaShoppingCart } from 'react-icons/fa';
+import { FaHome, FaUserPlus, FaBoxes, FaHandHoldingHeart, FaUsers, FaChartBar, FaCog, FaUser, FaQuestionCircle, FaShoppingCart, FaIdCard } from 'react-icons/fa';
 
 const menuIcons = {
     Home: <FaHome />,
@@ -11,6 +11,7 @@ const menuIcons = {
     Estoque: <FaBoxes />,
     Doadores: <FaHandHoldingHeart />,
     Beneficiários: <FaUsers />,
+    Cartões: <FaIdCard />,
     Retirada: <FaShoppingCart />,
     Relatórios: <FaChartBar />,
     Configurações: <FaCog />,
@@ -54,6 +55,9 @@ export default function Navigation() {
             </nav>
             <div className={styles.sectionTitle}>OTHERS</div>
             <nav className={styles.menuSection}>
+                <Link href="/cartoes" className={`${styles.menuItem} ${isActive('/cartoes') ? styles.active : ''}`}>
+                    {menuIcons.Cartões} Cartões
+                </Link>
                 <Link href="/relatorios" className={`${styles.menuItem} ${isActive('/relatorios') ? styles.active : ''}`}>
                     {menuIcons.Relatórios} Relatórios
                 </Link>

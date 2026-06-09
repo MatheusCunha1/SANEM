@@ -10,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.UUID;
 
 @Slf4j
@@ -71,7 +72,7 @@ public class AuthService {
 
     String token = UUID.randomUUID().toString();
     user.setResetToken(token);
-    user.setResetTokenExpiry(LocalDateTime.now().plusHours(1));
+    user.setResetTokenExpiry(LocalDateTime.now(ZoneId.of("America/Sao_Paulo")).plusHours(1));
     appUserRepository.save(user);
 
     log.info("Token de recuperação de senha gerado para: {}", email);
@@ -82,7 +83,7 @@ public class AuthService {
     AppUser user = appUserRepository.findByResetToken(token)
         .orElseThrow(() -> new RuntimeException("Token inválido ou expirado"));
 
-    if (user.getResetTokenExpiry() == null || LocalDateTime.now().isAfter(user.getResetTokenExpiry())) {
+    if (user.getResetTokenExpiry() == null || LocalDateTime.now(ZoneId.of("America/Sao_Paulo")).isAfter(user.getResetTokenExpiry())) {
       throw new RuntimeException("Token expirado. Solicite uma nova recuperação de senha.");
     }
 
