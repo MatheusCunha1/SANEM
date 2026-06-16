@@ -12,6 +12,12 @@ public class DonorCreateMapper {
         donor.setName(donorFormDTO.name());
         donor.setCpfCnpj(donorFormDTO.cpfCnpj());
         donor.setContact(donorFormDTO.contact());
+        donor.setPhone(donorFormDTO.phone());
+        donor.setAddress(donorFormDTO.address());
+        donor.setNumber(donorFormDTO.number());
+        donor.setComplement(donorFormDTO.complement());
+        donor.setNeighborhood(donorFormDTO.neighborhood());
+        donor.setReferencePoint(donorFormDTO.referencePoint());
 
         return donor;
     }
