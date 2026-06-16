@@ -29,7 +29,7 @@ public class DonationController {
         Donor donor = donorService.getOrThrowException(formDTO.donorId());
         AppUser user = userService.getOrThrowException(formDTO.receiverUserId());
 
-        DonationDTO donationCriada = donationService.create(formDTO, donor, user);
+        DonationDTO donationCriada = donationService.create(formDTO, donor, user, formDTO.items());
 
         return ResponseEntity.status(HttpStatus.CREATED).body(donationCriada);
     }

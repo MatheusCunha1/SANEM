@@ -362,6 +362,29 @@ class ApiService {
       method: 'DELETE',
     });
   }
+
+  async getDonations(filters = {}) {
+    const queryParams = new URLSearchParams(filters).toString();
+    const endpoint = `/donation${queryParams ? `?${queryParams}` : ''}`;
+    return this.request(endpoint);
+  }
+
+  async getDonation(id) {
+    return this.request(`/donation/${id}`);
+  }
+
+  async createDonation(donationData) {
+    return this.request('/donation', {
+      method: 'POST',
+      body: JSON.stringify(donationData),
+    });
+  }
+
+  async deleteDonation(id) {
+    return this.request(`/donation/${id}`, {
+      method: 'DELETE',
+    });
+  }
 }
 
 // Instância singleton do serviço

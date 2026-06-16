@@ -3,7 +3,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import styles from './navegation.module.css';
-import { FaHome, FaUserPlus, FaBoxes, FaHandHoldingHeart, FaUsers, FaChartBar, FaCog, FaUser, FaQuestionCircle, FaShoppingCart, FaIdCard } from 'react-icons/fa';
+import { FaHome, FaUserPlus, FaBoxes, FaHandHoldingHeart, FaUsers, FaChartBar, FaCog, FaUser, FaQuestionCircle, FaShoppingCart, FaIdCard, FaGift } from 'react-icons/fa';
 
 const menuIcons = {
     Home: <FaHome />,
@@ -13,6 +13,7 @@ const menuIcons = {
     Beneficiários: <FaUsers />,
     Cartões: <FaIdCard />,
     Retirada: <FaShoppingCart />,
+    Doações: <FaGift />,
     Relatórios: <FaChartBar />,
     Configurações: <FaCog />,
     Usuários: <FaUser />,
@@ -45,6 +46,9 @@ export default function Navigation() {
                 </Link>
                 <Link href="/retirada" className={`${styles.menuItem} ${isActive('/retirada') ? styles.active : ''}`}>
                     {menuIcons.Retirada} Retirada
+                </Link>
+                <Link href="/doacao" className={`${styles.menuItem} ${isActive('/doacao') ? styles.active : ''}`}>
+                    {menuIcons.Doações} Doações
                 </Link>
                 <Link href="/cadastrodoador/lista" className={`${styles.menuItem} ${isActive('/cadastrodoador') ? styles.active : ''}`}>
                     {menuIcons.Doadores} Doadores
