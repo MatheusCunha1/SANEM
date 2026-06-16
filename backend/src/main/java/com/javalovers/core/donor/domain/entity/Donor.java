@@ -30,8 +30,27 @@ public class Donor implements SoftDeletable {
     @Column(name = "cpf_cnpj", unique = true)
     private String cpfCnpj;
 
+    @NotNull
     @Column(name = "contact")
     private String contact;
+
+    @Column(name = "phone")
+    private String phone;
+
+    @Column(name = "address")
+    private String address;
+
+    @Column(name = "number")
+    private String number;
+
+    @Column(name = "complement")
+    private String complement;
+
+    @Column(name = "neighborhood")
+    private String neighborhood;
+
+    @Column(name = "reference_point")
+    private String referencePoint;
 
     @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
