@@ -205,5 +205,5 @@ build/Release
 .Trashes
 ehthumbs.db
 Thumbs.db
-
 /.abacusai
+.abacusai/config.json
