@@ -15,6 +15,7 @@ import com.javalovers.core.beneficiary.specification.BeneficiarySpecification;
 import com.javalovers.core.beneficiarystatus.BeneficiaryStatus;
 import com.javalovers.core.appuser.domain.entity.AppUser;
 import com.javalovers.core.appuser.service.AppUserService;
+import com.javalovers.core.auditlog.service.AuditLogService;
 import com.javalovers.core.card.entity.Card;
 import com.javalovers.core.card.repository.CardRepository;
 import jakarta.persistence.EntityManager;
@@ -41,6 +42,7 @@ public class BeneficiaryService {
     private final CardRepository cardRepository;
     private final EntityManager entityManager;
     private final AppUserService appUserService;
+    private final AuditLogService auditLogService;
 
     public Beneficiary generateBeneficiary(BeneficiaryFormDTO beneficiaryFormDTO) {
         return beneficiaryCreateMapper.convert(beneficiaryFormDTO);
@@ -192,21 +194,25 @@ public class BeneficiaryService {
     public void approveBeneficiary(Long beneficiaryId, Long approverUserId) {
         Beneficiary beneficiary = getOrThrowException(beneficiaryId);
         AppUser approver = appUserService.getOrThrowException(approverUserId);
-        
+
         beneficiary.setBeneficiaryStatus(BeneficiaryStatus.APPROVED);
         beneficiary.setApproverId(approver);
-        
         beneficiaryRepository.save(beneficiary);
+
+        auditLogService.log("APPROVE_BENEFICIARY", "BENEFICIARY", beneficiaryId, approverUserId,
+                "Beneficiário aprovado por " + approver.getName());
     }
 
     @Transactional
     public void rejectBeneficiary(Long beneficiaryId, Long approverUserId) {
         Beneficiary beneficiary = getOrThrowException(beneficiaryId);
         AppUser approver = appUserService.getOrThrowException(approverUserId);
-        
+
         beneficiary.setBeneficiaryStatus(BeneficiaryStatus.REJECTED);
         beneficiary.setApproverId(approver);
-        
         beneficiaryRepository.save(beneficiary);
+
+        auditLogService.log("REJECT_BENEFICIARY", "BENEFICIARY", beneficiaryId, approverUserId,
+                "Beneficiário rejeitado por " + approver.getName());
     }
 }

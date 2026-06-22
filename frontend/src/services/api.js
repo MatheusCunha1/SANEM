@@ -118,6 +118,10 @@ class ApiService {
     return this.request(`/item/${id}/label`);
   }
 
+  async getLowStockItems(threshold = 5) {
+    return this.request(`/item/low-stock?threshold=${threshold}`);
+  }
+
   // Métodos para Usuários
   async getUsers() {
     return this.request('/user/all');
@@ -384,6 +388,10 @@ class ApiService {
     return this.request(`/donation/${id}`, {
       method: 'DELETE',
     });
+  }
+
+  async getAuditLogs() {
+    return this.request('/audit-log/all');
   }
 }
 

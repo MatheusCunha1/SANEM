@@ -17,6 +17,7 @@ import com.javalovers.core.withdrawallimit.service.WithdrawalLimitConfigService;
 import com.javalovers.core.beneficiary.service.BeneficiaryService;
 import com.javalovers.core.item.service.ItemService;
 import com.javalovers.core.item.domain.entity.Item;
+import com.javalovers.core.auditlog.service.AuditLogService;
 import com.javalovers.core.itemwithdrawn.domain.entity.ItemWithdrawn;
 import com.javalovers.core.itemwithdrawn.repository.ItemWithdrawnRepository;
 import jakarta.persistence.EntityManager;
@@ -45,6 +46,7 @@ public class WithdrawalService {
     private final ItemService itemService;
     private final ItemWithdrawnRepository itemWithdrawnRepository;
     private final EntityManager entityManager;
+    private final AuditLogService auditLogService;
 
     public Withdrawal generateWithdrawal(WithdrawalFormDTO withdrawalFormDTO, Beneficiary beneficiary, AppUser attendantUser) {
         return withdrawalCreateMapper.convert(withdrawalFormDTO, beneficiary, attendantUser);
@@ -69,6 +71,11 @@ public class WithdrawalService {
         
         // Atualizar contador de retiradas do beneficiário
         updateBeneficiaryWithdrawalCount(withdrawal, withdrawalFormDTO);
+
+        Long attendantId = withdrawal.getAttendantUser() != null ? withdrawal.getAttendantUser().getUserId() : null;
+        String beneficiaryName = withdrawal.getBeneficiary() != null ? withdrawal.getBeneficiary().getFullName() : "?";
+        auditLogService.log("CREATE_WITHDRAWAL", "WITHDRAWAL", withdrawal.getWithdrawalId(),
+                attendantId, "Retirada registrada para beneficiário: " + beneficiaryName);
     }
 
     @Transactional

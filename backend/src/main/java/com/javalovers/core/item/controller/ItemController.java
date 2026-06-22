@@ -85,6 +85,11 @@ public class ItemController {
         return ResponseEntity.noContent().build();
     }
 
+    @GetMapping("/low-stock")
+    public ResponseEntity<List<ItemDTO>> getLowStock(@RequestParam(defaultValue = "5") Long threshold) {
+        return ResponseEntity.ok(itemService.getLowStockItems(threshold));
+    }
+
     @GetMapping("/{id}/label")
     public ResponseEntity<ItemLabelDTO> getItemLabel(@PathVariable Long id) {
         Item item = itemService.getOrNull(id);

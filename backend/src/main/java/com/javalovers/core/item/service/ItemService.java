@@ -128,6 +128,11 @@ public class ItemService {
         return itemList.stream().map(itemDTOMapper::convert).toList();
     }
 
+    public List<ItemDTO> getLowStockItems(Long threshold) {
+        return itemRepository.findLowStockItems(threshold)
+                .stream().map(itemDTOMapper::convert).toList();
+    }
+
     @Transactional
     public String generateTagCode(Long itemId) {
         Item item = getOrNull(itemId);

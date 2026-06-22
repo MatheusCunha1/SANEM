@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 import apiService from '../../services/api';
 import { mapItemFromBackend, mapItemToBackend } from '../../services/dataMapper';
 import { useApiList } from '../../hooks/useApi';
-import { FaPlus, FaPrint, FaTag, FaEdit, FaTrash } from 'react-icons/fa';
+import { FaPlus, FaPrint, FaTag, FaEdit, FaTrash, FaExclamationTriangle } from 'react-icons/fa';
 import { useNotification } from '../../components/notifications/NotificationProvider';
 import ConfirmationModal from '../../components/confirmation/ConfirmationModal';
 
@@ -19,6 +19,8 @@ export default function EstoquePage() {
   const [novoProduto, setNovoProduto] = useState({ nome: '', quantidade: '' });
   const [editProduto, setEditProduto] = useState({ nome: '', quantidade: '' });
   const [editingItem, setEditingItem] = useState(null);
+  const [lowStockItems, setLowStockItems] = useState([]);
+  const LOW_STOCK_THRESHOLD = 5;
   const router = useRouter();
 
   const {
@@ -39,8 +41,17 @@ export default function EstoquePage() {
     loadDataRaw().catch(err => {
       console.error("Erro ao carregar itens:", err);
     });
+    apiService.getLowStockItems(LOW_STOCK_THRESHOLD)
+      .then(data => setLowStockItems(Array.isArray(data) ? data : []))
+      .catch(() => setLowStockItems([]));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // Executar apenas na montagem do componente
+
+  const refreshStock = async () => {
+    await loadDataRaw();
+    const data = await apiService.getLowStockItems(LOW_STOCK_THRESHOLD).catch(() => []);
+    setLowStockItems(Array.isArray(data) ? data : []);
+  };
 
   async function handleAddProduto(e) {
     e.preventDefault();
@@ -54,8 +65,8 @@ export default function EstoquePage() {
       };
       
       await apiService.createItem(itemData);
-      await loadDataRaw();
-      
+      await refreshStock();
+
       setNovoProduto({ nome: '', quantidade: '' });
       setShowAddModal(false);
       showNotification("Produto adicionado com sucesso!", "success");
@@ -69,7 +80,7 @@ export default function EstoquePage() {
     
     try {
       await apiService.deleteItem(itemToDelete.id);
-      await loadDataRaw();
+      await refreshStock();
       setItemToDelete(null);
       showNotification("Produto excluído com sucesso!", "success");
     } catch (err) {
@@ -102,8 +113,8 @@ export default function EstoquePage() {
       });
       
       await apiService.updateItem(editingItem.id, itemData);
-      await loadDataRaw();
-      
+      await refreshStock();
+
       setEditProduto({ nome: '', quantidade: '' });
       setShowEditModal(false);
       setEditingItem(null);
@@ -198,6 +209,13 @@ export default function EstoquePage() {
           <h1 className={styles.titulo}>Controle de Estoque</h1>
           <div className={styles.decoracao}></div>
 
+          {lowStockItems.length > 0 && (
+            <div style={{ background: '#fff3cd', border: '1px solid #ffc107', borderRadius: '6px', padding: '10px 16px', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '10px', color: '#856404' }}>
+              <FaExclamationTriangle />
+              <span><strong>{lowStockItems.length} {lowStockItems.length === 1 ? 'item' : 'itens'} com estoque baixo</strong> (≤ {LOW_STOCK_THRESHOLD} unidades): {lowStockItems.map(i => i.description).join(', ')}</span>
+            </div>
+          )}
+
           <div className={styles.actionsHeader}>
             <button
               className={styles.addButton}
@@ -232,10 +250,12 @@ export default function EstoquePage() {
                     <td colSpan={4} className={styles.noDataMessage}>Nenhum produto cadastrado ainda.</td>
                   </tr>
                 ) : (
-                  mockEstoque.map(item => (
-                    <tr key={item.id}>
+                  mockEstoque.map(item => {
+                    const isLow = item.quantidade <= LOW_STOCK_THRESHOLD;
+                    return (
+                    <tr key={item.id} style={isLow ? { background: '#fff3cd' } : {}}>
                       <td>{item.id}</td>
-                      <td>{item.nome}</td>
+                      <td>{item.nome}{isLow && <FaExclamationTriangle style={{ color: '#ffc107', marginLeft: '6px' }} title="Estoque baixo" />}</td>
                       <td>{item.quantidade}</td>
                       <td className={styles.actionButtons}>
                         <button
@@ -265,7 +285,8 @@ export default function EstoquePage() {
                         </button>
                       </td>
                     </tr>
-                  ))
+                  );
+                  })
                 )}
               </tbody>
             </table>

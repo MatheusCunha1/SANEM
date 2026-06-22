@@ -65,10 +65,28 @@ export default function RegistrarRetiradaPage() {
     }
   };
 
-  const filteredBeneficiaries = beneficiaries.filter(b =>
-    b.nomeCompleto?.toLowerCase().includes(searchBeneficiary.toLowerCase()) ||
-    b.cpfCrnm?.includes(searchBeneficiary)
-  );
+  const formatCPF = (value) => {
+    const digits = value.replace(/\D/g, '').slice(0, 11);
+    return digits
+      .replace(/(\d{3})(\d)/, '$1.$2')
+      .replace(/(\d{3})(\d)/, '$1.$2')
+      .replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+  };
+
+  const handleSearchBeneficiaryChange = (e) => {
+    const raw = e.target.value;
+    const isNumeric = /^\d[\d.\-]*$/.test(raw);
+    setSearchBeneficiary(isNumeric ? formatCPF(raw) : raw);
+  };
+
+  const filteredBeneficiaries = beneficiaries.filter(b => {
+    const term = searchBeneficiary.toLowerCase();
+    return (
+      b.nomeCompleto?.toLowerCase().includes(term) ||
+      b.cpfCrnm?.replace(/\D/g, '').includes(searchBeneficiary.replace(/\D/g, '')) ||
+      b.cpfCrnm?.includes(term)
+    );
+  });
 
   const filteredItems = items.filter(item =>
     item.nome?.toLowerCase().includes(searchItem.toLowerCase()) ||
@@ -184,9 +202,9 @@ export default function RegistrarRetiradaPage() {
               <div className={styles.searchBox}>
                 <input
                   type="text"
-                  placeholder="Buscar beneficiário por nome ou CPF..."
+                  placeholder="Buscar por nome ou CPF (000.000.000-00)..."
                   value={searchBeneficiary}
-                  onChange={(e) => setSearchBeneficiary(e.target.value)}
+                  onChange={handleSearchBeneficiaryChange}
                   className={styles.searchInput}
                 />
               </div>
