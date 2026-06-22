@@ -6,6 +6,8 @@ import com.javalovers.core.beneficiary.domain.dto.request.BeneficiaryFormDTO;
 import com.javalovers.core.beneficiary.domain.dto.response.BeneficiaryDTO;
 import com.javalovers.core.beneficiary.domain.entity.Beneficiary;
 import com.javalovers.core.beneficiary.service.BeneficiaryService;
+import com.javalovers.core.appuser.domain.entity.AppUser;
+import com.javalovers.core.appuser.service.AuthService;
 import com.javalovers.core.withdrawal.domain.dto.request.WithdrawalFilterDTO;
 import com.javalovers.core.withdrawal.domain.dto.response.WithdrawalDTO;
 import com.javalovers.core.withdrawal.service.WithdrawalService;
@@ -27,6 +29,7 @@ public class BeneficiaryController {
 
     private final BeneficiaryService beneficiaryService;
     private final WithdrawalService withdrawalService;
+    private final AuthService authService;
 
     @GetMapping
     public ResponseEntity<Page<BeneficiaryDTO>> listPaged(Pageable pageable,
@@ -91,24 +94,28 @@ public class BeneficiaryController {
     }
 
     @PatchMapping("/{id}/approve")
-    public ResponseEntity<BeneficiaryDTO> approve(@PathVariable Long id, @RequestParam Long approverUserId) {
+    public ResponseEntity<BeneficiaryDTO> approve(@PathVariable Long id,
+            @RequestHeader("Authorization") String token) {
         Beneficiary beneficiary = beneficiaryService.getOrNull(id);
         if (beneficiary == null)
             return ResponseEntity.notFound().build();
 
-        beneficiaryService.approveBeneficiary(id, approverUserId);
+        AppUser approver = authService.getUserFromToken(token);
+        beneficiaryService.approveBeneficiary(id, approver.getUserId());
 
         Beneficiary updatedBeneficiary = beneficiaryService.getOrThrowException(id);
         return ResponseEntity.ok(beneficiaryService.generateBeneficiaryDTO(updatedBeneficiary));
     }
 
     @PatchMapping("/{id}/reject")
-    public ResponseEntity<BeneficiaryDTO> reject(@PathVariable Long id, @RequestParam Long approverUserId) {
+    public ResponseEntity<BeneficiaryDTO> reject(@PathVariable Long id,
+            @RequestHeader("Authorization") String token) {
         Beneficiary beneficiary = beneficiaryService.getOrNull(id);
         if (beneficiary == null)
             return ResponseEntity.notFound().build();
 
-        beneficiaryService.rejectBeneficiary(id, approverUserId);
+        AppUser approver = authService.getUserFromToken(token);
+        beneficiaryService.rejectBeneficiary(id, approver.getUserId());
 
         Beneficiary updatedBeneficiary = beneficiaryService.getOrThrowException(id);
         return ResponseEntity.ok(beneficiaryService.generateBeneficiaryDTO(updatedBeneficiary));

@@ -1,0 +1,142 @@
+.containerGeral {
+  display: flex;
+  min-height: 100vh;
+  background: #f5f5f5;
+}
+
+.contentWrapper {
+  flex: 1;
+  margin-left: 220px;
+  padding: 32px 28px;
+}
+
+.titulo {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 4px;
+}
+
+.decoracao {
+  width: 50px;
+  height: 4px;
+  background: #e74c3c;
+  border-radius: 2px;
+  margin-bottom: 24px;
+}
+
+.summaryCards {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.card {
+  background: #fff;
+  border-radius: 10px;
+  padding: 20px 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  min-width: 130px;
+}
+
+.cardNumber {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #e74c3c;
+}
+
+.cardLabel {
+  font-size: 0.85rem;
+  color: #666;
+  margin-top: 4px;
+}
+
+.tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 2px solid #e0e0e0;
+  margin-bottom: 16px;
+}
+
+.tab {
+  background: none;
+  border: none;
+  padding: 10px 24px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  color: #666;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -2px;
+  transition: all 0.2s;
+}
+
+.tab:hover { color: #333; }
+
+.tabActive {
+  color: #e74c3c;
+  border-bottom-color: #e74c3c;
+  font-weight: 600;
+}
+
+.searchRow {
+  margin-bottom: 16px;
+}
+
+.searchInput {
+  padding: 8px 14px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  width: 280px;
+  outline: none;
+}
+
+.searchInput:focus { border-color: #e74c3c; }
+
+.tableWrapper {
+  overflow-x: auto;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.table th {
+  background: #f8f8f8;
+  padding: 12px 16px;
+  text-align: left;
+  font-weight: 600;
+  color: #444;
+  border-bottom: 1px solid #eee;
+}
+
+.table td {
+  padding: 11px 16px;
+  border-bottom: 1px solid #f0f0f0;
+  color: #555;
+}
+
+.table tr:last-child td { border-bottom: none; }
+
+.table tr:hover td { background: #fafafa; }
+
+.empty {
+  text-align: center;
+  color: #aaa;
+  font-style: italic;
+  padding: 32px !important;
+}
+
+.loading {
+  text-align: center;
+  color: #888;
+  padding: 40px;
+}

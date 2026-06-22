@@ -57,4 +57,7 @@ public class AppUser implements SoftDeletable {
 
     @Column(name = "reset_token_expiry")
     private LocalDateTime resetTokenExpiry;
+
+    @Column(name = "auth_token")
+    private String authToken;
 }

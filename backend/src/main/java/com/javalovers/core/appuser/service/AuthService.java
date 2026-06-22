@@ -52,6 +52,9 @@ public class AuthService {
 
     String token = generateToken();
 
+    user.setAuthToken(token);
+    appUserRepository.save(user);
+
     return new LoginResponseDTO(
         token,
         user.getName(),
@@ -61,9 +64,15 @@ public class AuthService {
   }
 
   public boolean validateToken(String token) {
-    // Implementação simples de validação de token
-    // Em produção, usar JWT ou similar
     return token != null && token.startsWith("Bearer ");
+  }
+
+  public AppUser getUserFromToken(String token) {
+    if (token == null || !token.startsWith("Bearer ")) {
+      throw new RuntimeException("Token inválido");
+    }
+    return appUserRepository.findByAuthToken(token)
+        .orElseThrow(() -> new RuntimeException("Sessão inválida ou expirada. Faça login novamente."));
   }
 
   public String generatePasswordResetToken(String email) {
