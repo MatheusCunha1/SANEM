@@ -5,6 +5,7 @@ CREATE TABLE IF NOT EXISTS withdrawal_limit_config (
     is_active BOOLEAN NOT NULL DEFAULT TRUE,
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    deleted_at DATETIME DEFAULT NULL,
     CONSTRAINT chk_monthly_limit_positive CHECK (monthly_item_limit > 0)
 );
 
