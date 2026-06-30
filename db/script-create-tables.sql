@@ -86,7 +86,15 @@ CREATE TABLE donor (
     name VARCHAR(160) NOT NULL,
     cpf_cnpj VARCHAR(20),
     contact VARCHAR(160),
-
+    phone VARCHAR(20),
+    address VARCHAR(255),
+    number VARCHAR(20),
+    complement VARCHAR(100),
+    neighborhood VARCHAR(100),
+    reference_point VARCHAR(255),
+    deleted_at DATETIME DEFAULT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     UNIQUE KEY uq_donor_cpfcnpj (cpf_cnpj)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 

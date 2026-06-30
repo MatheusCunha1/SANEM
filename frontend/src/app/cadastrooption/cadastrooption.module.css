@@ -27,7 +27,7 @@
   margin-bottom: 16px;
   font-size: 36px;
   text-align: center;
-  color: #000;
+  color: var(--color-text);
 }
 
 .radioGroup {
@@ -42,7 +42,7 @@
   align-items: center;
   gap: 6px;
   font-size: 14px;
-  color: #18132b;
+  color: var(--color-text);
 }
 
 .radioText {
@@ -50,13 +50,13 @@
 }
 
 .radioInput[type="radio"] {
-  accent-color: #18132b;
+  accent-color: var(--color-primary);
   width: 18px;
   height: 18px;
 }
 
 .button {
-  background: #000;
+  background: var(--color-primary);
   color: #fff;
   border: none;
   border-radius: 6px;
@@ -68,7 +68,7 @@
 }
 
 .button:hover {
-  background: #18132b;
+  background: var(--color-primary-dark);
 }
 
 .contentArea {

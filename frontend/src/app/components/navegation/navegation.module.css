@@ -63,13 +63,47 @@
 }
 
 .menuItem:hover {
-  background: #e9eafd;
-  color: #2a3cff;
+  background: #f0f4ff;
+  color: var(--color-primary);
 }
 
 .active {
-  background: #e9eafd;
-  color: #2a3cff;
   font-weight: 600;
-  border-left: 4px solid #2a3cff;
+  border-left: 4px solid currentColor;
+}
+
+/* Azul — Beneficiários, Home, Cartões, etc. */
+.active_blue {
+  background: #e8f0fe;
+  color: #1976d2;
+}
+.active_blue:hover {
+  background: #d4e4fc;
+}
+
+/* Verde — Doadores */
+.active_green {
+  background: #e8f5e9;
+  color: #43a047;
+}
+.active_green:hover {
+  background: #c8e6c9;
+}
+
+/* Laranja — Doações */
+.active_orange {
+  background: #fff3e0;
+  color: #e08a1e;
+}
+.active_orange:hover {
+  background: #ffe0b2;
+}
+
+/* Vermelho — Estoque, Retirada */
+.active_red {
+  background: #fdecea;
+  color: #c0392b;
+}
+.active_red:hover {
+  background: #f5c6c2;
 } 
