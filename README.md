@@ -119,8 +119,8 @@ JavaLovers/
 1. **Clone o repositório**
 
    ```bash
-   git clone <url-do-repositorio>
-   cd JavaLovers
+   git clone https://github.com/MatheusCunha1/SANEM
+   cd SANEM
    ```
 
 2. **Execute com Docker Compose**
@@ -212,42 +212,40 @@ spring:
 - ✅ Dashboard do usuário
 - ✅ Configuração de CORS
 - ✅ Containerização com Docker
+- ✅ CRUD completo de beneficiários
+- ✅ Sistema de aprovação de cadastros
+- ✅ Geração de cartões de identificação
+- ✅ Cadastro de itens doados
+- ✅ Alertas de estoque baixo
+- ✅ Registro de retiradas
+- ✅ Controle de limites mensais
+- ✅ Gestão de usuários
+- ✅ Relatórios de doações
+- ✅ Relatórios de distribuições
+- ✅ Dashboard administrativo
+- ✅ Sistema de autenticação JWT
+- ✅ Integração frontend-backend
 
 ### Em Desenvolvimento
 
 #### 👥 Gestão de Beneficiários
 
-- 🔄 CRUD completo de beneficiários
-- 🔄 Sistema de aprovação de cadastros
-- 🔄 Geração de cartões de identificação
 - 🔄 Histórico de atendimentos
 
 #### 📦 Controle de Estoque
 
-- 🔄 Cadastro de itens doados
 - 🔄 Sistema de códigos únicos
 - 🔄 Controle de entrada e saída
-- 🔄 Alertas de estoque baixo
 
 #### 🎁 Sistema de Distribuição
-
-- 🔄 Registro de retiradas
-- 🔄 Controle de limites mensais
 - 🔄 Baixa automática no estoque
 - 🔄 Validação de regras de distribuição
 
 #### 👨‍💼 Administração
 
 - 🔄 Sistema de permissões (Atendente/Administrador)
-- 🔄 Gestão de usuários
-- 🔄 Relatórios de doações
-- 🔄 Relatórios de distribuições
-- 🔄 Dashboard administrativo
 
 #### 🔧 Infraestrutura
-
-- 🔄 Sistema de autenticação JWT
-- 🔄 Integração frontend-backend
 - 🔄 Validação de formulários
 - 🔄 Testes unitários e de integração
 
@@ -301,12 +299,10 @@ Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para ma
 - **Disciplina**: Oficina de Desenvolvimento de Software
 - **Instituição**: UTFPR - Campus Medianeira
 
-- **Alunos**: Emilly Pessutti, Luna Santos, Rafael Tomkowski, Vitor Paladini
+- **Alunos**: Bruno Gomes, Matheus Cunha
 
 ## 📞 Suporte
 
 Para dúvidas ou suporte, entre em contato através dos issues do GitHub.
 
 ---
-
-**Desenvolvido com ❤️ pelos JavaLovers para auxiliar organizações de assistência social**
