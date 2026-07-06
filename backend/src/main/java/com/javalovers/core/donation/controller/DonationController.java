@@ -48,4 +48,10 @@ public class DonationController {
         return ResponseEntity.ok(allDonations);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        donationService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+
 }

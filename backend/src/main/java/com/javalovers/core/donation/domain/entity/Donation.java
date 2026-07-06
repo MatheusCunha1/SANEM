@@ -3,6 +3,7 @@ package com.javalovers.core.donation.domain.entity;
 import com.javalovers.common.entity.SoftDeletable;
 import com.javalovers.core.donor.domain.entity.Donor;
 import com.javalovers.core.appuser.domain.entity.AppUser;
+import com.javalovers.core.itemdonated.domain.entity.ItemDonated;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -12,6 +13,7 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Getter
@@ -35,6 +37,9 @@ public class Donation implements SoftDeletable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "donor_id")
     private Donor donor;
+
+    @OneToMany(mappedBy = "donation", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ItemDonated> items;
 
     @Column(name = "deleted_at")
     private LocalDateTime deletedAt;

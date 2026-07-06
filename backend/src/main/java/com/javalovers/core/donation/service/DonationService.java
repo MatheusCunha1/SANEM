@@ -75,11 +75,17 @@ public class DonationService {
                 .stream()
                 .map(donationDTOMapper::convert)
                 .collect(Collectors.toList());
-    }
+     }
 
-    public Donation getOrThrowException(Long id) {
-        return donationRepository.findById(id).orElseThrow(
-                () -> new EntityNotFoundException("Donation", id)
-        );
-    }
+     @Transactional
+     public void delete(Long id) {
+         Donation donation = getOrThrowException(id);
+         donationRepository.delete(donation);
+     }
+
+     public Donation getOrThrowException(Long id) {
+         return donationRepository.findById(id).orElseThrow(
+                 () -> new EntityNotFoundException("Donation", id)
+         );
+     }
 }

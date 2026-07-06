@@ -240,7 +240,7 @@ export default function ListaDoacoesPage() {
                 <tr>
                   <th>Data</th>
                   <th>Doador</th>
-                  <th>Recebedor</th>
+                  <th>Atendente</th>
                   <th>Itens</th>
                   <th>Ações</th>
                 </tr>
